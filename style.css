@@ -1,0 +1,164 @@
+:root {
+  --bg: #101322;
+  --card: #1a1f35;
+  --text: #f4f6ff;
+  --muted: #b5bddb;
+  --primary: #4c8dff;
+  --danger: #ff6b6b;
+  --ok: #37c978;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", "Apple SD Gothic Neo", sans-serif;
+}
+
+.app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px;
+  padding-bottom: 96px;
+}
+
+.topbar h1 {
+  margin: 0 0 6px;
+  font-size: 1.5rem;
+}
+
+.topbar p {
+  margin: 0 0 12px;
+  color: var(--muted);
+}
+
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sticky-card {
+  position: sticky;
+  bottom: 10px;
+  z-index: 5;
+}
+
+h2 {
+  margin: 0 0 10px;
+  font-size: 1.08rem;
+}
+
+label {
+  display: block;
+  margin: 8px 0 6px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+input, select {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: #0f1429;
+  color: var(--text);
+  padding: 12px;
+  font-size: 1rem;
+}
+
+.row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: white;
+  background: #3f486f;
+}
+
+.btn.primary {
+  background: var(--primary);
+}
+
+.btn.danger {
+  background: var(--danger);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.card-btn {
+  text-align: left;
+  padding: 12px;
+  border-radius: 10px;
+  background: #101734;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--text);
+}
+
+.card-btn.disabled {
+  opacity: 0.4;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+
+.list li {
+  background: #0f1429;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.86rem;
+  margin: 10px 0 0;
+}
+
+.pill {
+  display: inline-block;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  padding: 4px 8px;
+  font-size: 0.8rem;
+}
+
+.success {
+  color: var(--ok);
+  font-weight: 700;
+}
+
+.danger-text {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+.hidden {
+  display: none !important;
+}

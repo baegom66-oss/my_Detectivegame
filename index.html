@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>멀티 추리 게임</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <h1>멀티 추리 게임</h1>
+      <p id="statusText">연결 대기 중</p>
+    </header>
+
+    <section id="joinSection" class="card">
+      <h2>방 입장</h2>
+      <label>플레이어 이름</label>
+      <input id="nameInput" type="text" maxlength="20" placeholder="이름 입력" />
+
+      <label>방 코드</label>
+      <input id="roomCodeInput" type="text" maxlength="8" placeholder="예: ABC123" />
+
+      <div class="row">
+        <button id="createRoomBtn" class="btn primary">방 생성</button>
+        <button id="joinRoomBtn" class="btn">방 입장</button>
+      </div>
+
+      <div id="hostOnlyConfig" class="hidden">
+        <label>플레이 인원 (5~8)</label>
+        <input id="maxPlayersInput" type="number" min="5" max="8" value="5" />
+      </div>
+
+      <p class="hint">Firebase 설정은 <code>script.js</code>의 <code>firebaseConfig</code>에 입력하세요.</p>
+    </section>
+
+    <section id="gameSection" class="hidden">
+      <article class="card">
+        <h2>게임 정보</h2>
+        <p><strong>방 코드:</strong> <span id="roomCodeText">-</span></p>
+        <p><strong>상태:</strong> <span id="gameStateText">-</span></p>
+        <p><strong>라운드:</strong> <span id="roundText">-</span></p>
+        <p><strong>내 역할:</strong> <span id="myRoleText">비공개</span></p>
+        <button id="startGameBtn" class="btn primary hidden">게임 시작</button>
+      </article>
+
+      <article class="card">
+        <h2>플레이어</h2>
+        <ul id="playersList" class="list"></ul>
+      </article>
+
+      <article class="card sticky-card">
+        <h2>내 증거 카드 (항상 표시)</h2>
+        <div id="myCards" class="grid"></div>
+        <p class="hint">직전 라운드에 사용한 카드는 다음 라운드에만 사용 불가합니다.</p>
+      </article>
+
+      <article class="card">
+        <h2>현재 행동</h2>
+        <div id="actionArea"></div>
+      </article>
+
+      <article class="card">
+        <h2>장소별 익명 공개 카드</h2>
+        <div id="revealedCardsArea"></div>
+      </article>
+    </section>
+  </main>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
