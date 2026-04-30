@@ -1,11 +1,12 @@
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyB4IrbfO9wLCTvyIP9Wc1_w38baC0qrSD0",
+  authDomain: "my-detective-game.firebaseapp.com",
+  databaseURL: "https://my-detective-game-default-rtdb.firebaseio.com",
+  projectId: "my-detective-game",
+  storageBucket: "my-detective-game.firebasestorage.app",
+  messagingSenderId: "556148051636",
+  appId: "1:556148051636:web:08125ae7e3d155605b91e1",
+  measurementId: "G-6KKD3F89PQ"
 };
 
 firebase.initializeApp(firebaseConfig);
