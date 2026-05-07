@@ -394,27 +394,46 @@ async function maybeComputeRanking() {
   const criminal = players.find((p) => p.role === "범인");
   const accomplice = players.find((p) => p.role === "공범");
   const criminalCards = new Set(criminal?.cards || []);
-  const scoreMap = {};
+  const individualCorrectProofs = {};
   citizens.forEach((c) => {
     const guess = predictions[c.id] || [];
-    scoreMap[c.id] = guess.filter((g) => criminalCards.has(g)).length;
+    individualCorrectProofs[c.id] = guess.filter((g) => criminalCards.has(g)).length;
   });
 
-  let ranking = [];
-  if (result.citizensWin) {
-    ranking = citizens
-      .map((c) => ({ playerId: c.id, score: scoreMap[c.id], label: c.name }))
-      .sort((a, b) => b.score - a.score);
-  } else {
-    if (criminal) ranking.push({ playerId: criminal.id, score: 999, label: `${criminal.name} (공동 1등)` });
-    if (accomplice) ranking.push({ playerId: accomplice.id, score: 999, label: `${accomplice.name} (공동 1등)` });
-    const citizenRank = citizens
-      .map((c) => ({ playerId: c.id, score: scoreMap[c.id], label: c.name }))
-      .sort((a, b) => b.score - a.score);
-    ranking = ranking.concat(citizenRank);
+  const revealedByLocation = roomData?.game?.revealedByLocation || {};
+  const discoveredEvidenceCount = Object.values(revealedByLocation).reduce((count, cards) => {
+    const matches = (cards || []).filter((card) => criminalCards.has(card)).length;
+    return count + matches;
+  }, 0);
+  const criminalTeamScore = Math.max(0, 100 - discoveredEvidenceCount * 5);
+  const citizenBaseScore = result.citizensWin ? 40 : 0;
+
+  const ranking = [];
+  if (criminal) {
+    ranking.push({
+      playerId: criminal.id,
+      score: result.citizensWin ? 0 : criminalTeamScore,
+      label: criminal.name
+    });
   }
+  if (accomplice) {
+    ranking.push({
+      playerId: accomplice.id,
+      score: result.citizensWin ? 0 : criminalTeamScore,
+      label: accomplice.name
+    });
+  }
+  ranking.push(
+    ...citizens.map((c) => ({
+      playerId: c.id,
+      score: citizenBaseScore + individualCorrectProofs[c.id] * 20,
+      label: c.name
+    }))
+  );
+  ranking.sort((a, b) => b.score - a.score);
 
   await roomRef.update({
+    "game/individualCorrectProofs": individualCorrectProofs,
     "game/ranking": ranking
   });
 }
