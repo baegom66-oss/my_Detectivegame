@@ -67,7 +67,11 @@ const el = {
   playersList: document.getElementById("playersList"),
   myCards: document.getElementById("myCards"),
   actionArea: document.getElementById("actionArea"),
-  revealedCardsArea: document.getElementById("revealedCardsArea")
+  revealedCardsArea: document.getElementById("revealedCardsArea"),
+  noteToggleBtn: document.getElementById("noteToggleBtn"),
+  notePanel: document.getElementById("notePanel"),
+  noteCloseBtn: document.getElementById("noteCloseBtn"),
+  noteTextarea: document.getElementById("noteTextarea")
 };
 
 let playerId = localStorage.getItem("deduction_player_id");
@@ -79,6 +83,45 @@ if (!playerId) {
 let roomCode = "";
 let roomRef = null;
 let roomData = null;
+let notePanelOpen = false;
+let noteAutosaveTimer = null;
+
+function getNoteStorageKey() {
+  return `deduction_note_${playerId}`;
+}
+
+function loadNoteFromStorage() {
+  const note = localStorage.getItem(getNoteStorageKey()) || "";
+  if (el.noteTextarea) el.noteTextarea.value = note;
+}
+
+function saveNoteToStorage() {
+  if (!el.noteTextarea) return;
+  localStorage.setItem(getNoteStorageKey(), el.noteTextarea.value);
+}
+
+function setNotePanelOpen(open) {
+  notePanelOpen = open;
+  if (!el.notePanel) return;
+  el.notePanel.classList.toggle("hidden", !open);
+  el.notePanel.setAttribute("aria-hidden", open ? "false" : "true");
+}
+
+function setupNoteEvents() {
+  if (!el.noteToggleBtn || !el.noteCloseBtn || !el.noteTextarea) return;
+  el.noteToggleBtn.addEventListener("click", () => {
+    setNotePanelOpen(true);
+  });
+  el.noteCloseBtn.addEventListener("click", () => {
+    setNotePanelOpen(false);
+  });
+  el.noteTextarea.addEventListener("input", () => {
+    if (noteAutosaveTimer) clearTimeout(noteAutosaveTimer);
+    noteAutosaveTimer = setTimeout(() => {
+      saveNoteToStorage();
+    }, 200);
+  });
+}
 
 function shuffle(arr) {
   const copy = [...arr];
@@ -493,18 +536,20 @@ function renderMyCards() {
 }
 
 function renderRevealedCards() {
+  const me = getMyPlayer();
   const map = roomData?.game?.revealedByLocation || {};
-  const keys = Object.keys(map);
-  if (!keys.length) {
-    el.revealedCardsArea.innerHTML = "<p class='hint'>아직 공개된 카드가 없습니다.</p>";
+  const myLocation = me?.location;
+  if (!myLocation) {
+    el.revealedCardsArea.innerHTML = "<p class='hint'>장소를 선택하면 해당 장소의 익명 공개 카드만 표시됩니다.</p>";
     return;
   }
-  el.revealedCardsArea.innerHTML = keys
-    .map((loc) => {
-      const items = map[loc].map((c) => `<li>${c}</li>`).join("");
-      return `<div class="card"><strong>${loc}</strong><ul class="list">${items}</ul></div>`;
-    })
-    .join("");
+  const cards = map[myLocation] || [];
+  if (!cards.length) {
+    el.revealedCardsArea.innerHTML = `<p class='hint'>${myLocation}에서 아직 공개된 카드가 없습니다.</p>`;
+    return;
+  }
+  const items = cards.map((c) => `<li>${c}</li>`).join("");
+  el.revealedCardsArea.innerHTML = `<div class="card"><strong>${myLocation}</strong><ul class="list">${items}</ul></div>`;
 }
 
 function renderActionArea() {
@@ -643,6 +688,7 @@ function render() {
   renderRevealedCards();
   renderActionArea();
   renderStartButton();
+  el.noteToggleBtn.classList.toggle("hidden", !me);
 
   const mid = roomData?.game?.midVote;
   if (mid?.done) {
@@ -656,5 +702,7 @@ function render() {
 el.createRoomBtn.addEventListener("click", createRoom);
 el.joinRoomBtn.addEventListener("click", joinRoom);
 el.startGameBtn.addEventListener("click", startGame);
+setupNoteEvents();
+loadNoteFromStorage();
 
 setStatus("이름, 방 코드를 입력하고 시작하세요.");

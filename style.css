@@ -162,3 +162,68 @@ input, select {
 .hidden {
   display: none !important;
 }
+
+.note-toggle {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(14px + env(safe-area-inset-bottom));
+  width: min(220px, calc(100vw - 24px));
+  z-index: 40;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #fff;
+  border: 0;
+  padding: 12px 16px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.note-panel {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(64px + env(safe-area-inset-bottom));
+  max-height: min(55vh, 420px);
+  background: var(--card);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  padding: 12px;
+  z-index: 45;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.note-header h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.note-close-btn {
+  width: auto;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  background: #3f486f;
+}
+
+.note-textarea {
+  width: 100%;
+  min-height: 190px;
+  max-height: min(42vh, 320px);
+  resize: vertical;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  background: #0f1429;
+  color: var(--text);
+  padding: 10px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  overflow: auto;
+}

@@ -61,11 +61,21 @@
       </article>
 
       <article class="card">
-        <h2>장소별 익명 공개 카드</h2>
+        <h2>현재 장소 익명 공개 카드</h2>
         <div id="revealedCardsArea"></div>
       </article>
     </section>
   </main>
+
+  <button id="noteToggleBtn" class="note-toggle hidden" type="button">노트</button>
+  <section id="notePanel" class="note-panel hidden" aria-hidden="true">
+    <div class="note-header">
+      <h3>개인 추리 노트</h3>
+      <button id="noteCloseBtn" class="btn note-close-btn" type="button">닫기</button>
+    </div>
+    <textarea id="noteTextarea" class="note-textarea" placeholder="자유롭게 메모를 남겨 보세요."></textarea>
+    <p class="hint">이 노트는 내 기기에만 저장되며 다른 플레이어에게 공유되지 않습니다.</p>
+  </section>
 
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
